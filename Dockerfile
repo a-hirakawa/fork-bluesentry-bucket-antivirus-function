@@ -56,7 +56,9 @@ RUN PATH=$PATH:/root/.pyenv/bin && \
     pyenv global 3.11 && \
     pip3 install -r /opt/app/requirements.txt
 
-WORKDIR ~/.pyenv/versions/3.11.5/lib/python3.11/site-packages
+WORKDIR /root/.pyenv/versions/3.11.5/lib/python3.11/site-packages
 RUN zip -r9 /opt/app/build/lambda.zip *
+
+RUN mkdir -p /tmp/a/bin && cd /tmp/a && cp --dereference /usr/lib64/libpcre.so* bin && zip -r /opt/app/build/lambda.zip .
 
 WORKDIR /opt/app
