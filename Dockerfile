@@ -62,6 +62,6 @@ RUN zip -r9 /opt/app/build/lambda.zip *
 
 RUN yum install -y libtool-ltdl
 
-RUN mkdir -p /tmp/a/bin && cd /tmp/a && cp --dereference /usr/lib64/{libpcre.so*,libltdl.so.*} bin && zip -r /opt/app/build/lambda.zip .
+RUN mkdir -p /tmp/a/bin && cd /tmp/a && cp --dereference /usr/lib64/{libpcre.so*,libltdl.so.*,libxml2.so.2,liblzma.so.5} bin && zip -r /opt/app/build/lambda.zip .
 
 WORKDIR /opt/app
