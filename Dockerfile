@@ -48,8 +48,11 @@ RUN yum install -y gcc make patch zlib-devel bzip2 bzip2-devel readline-devel sq
 RUN curl -s -S -L https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer | bash
 RUN echo 'PATH=$PATH:/root/.pyenv/bin' >> ~/.bashrc
 RUN echo 'eval "$(pyenv init -)"' >> ~/.bashrc
-RUN export PATH=$PATH:/root/.pyenv/bin && \
-    pyenv install 3.11.5 && \
+RUN PATH=$PATH:/root/.pyenv/bin && \
+    eval "$(pyenv init -)" && \
+    pyenv install 3.11.5
+RUN PATH=$PATH:/root/.pyenv/bin && \
+    eval "$(pyenv init -)" && \
     pyenv global 3.11 && \
     pip3 install -r /opt/app/requirements.txt
 
