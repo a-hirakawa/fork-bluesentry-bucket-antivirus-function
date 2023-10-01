@@ -51,6 +51,7 @@ RUN echo 'eval "$(pyenv init -)"' >> ~/.bashrc
 RUN PATH=$PATH:/root/.pyenv/bin && \
     eval "$(pyenv init -)" && \
     pyenv install 3.11.5
+COPY requirements-tmp.txt /opt/app/requirements.txt
 RUN PATH=$PATH:/root/.pyenv/bin && \
     eval "$(pyenv init -)" && \
     pyenv global 3.11 && \
