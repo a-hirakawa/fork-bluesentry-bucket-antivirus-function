@@ -44,7 +44,16 @@ RUN echo "CompressLocalDatabase yes" >> /opt/app/bin/freshclam.conf
 WORKDIR /opt/app
 RUN zip -r9 --exclude="*test*" /opt/app/build/lambda.zip *.py bin
 
-WORKDIR /usr/local/lib/python3.7/site-packages
+RUN yum install -y gcc make patch zlib-devel bzip2 bzip2-devel readline-devel sqlite sqlite-devel openssl11-devel tk-devel libffi-devel xz-devel git tar
+RUN curl -s -S -L https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer | bash
+RUN echo 'PATH=$PATH:/root/.pyenv/bin' >> ~/.bashrc
+RUN echo 'eval "$(pyenv init -)"' >> ~/.bashrc
+RUN export PATH=$PATH:/root/.pyenv/bin && \
+    pyenv install 3.11.5 && \
+    pyenv global 3.11 && \
+    pip3 install -r /opt/app/requirements.txt
+
+WORKDIR ~/.pyenv/versions/3.11.5/lib/python3.11/site-packages
 RUN zip -r9 /opt/app/build/lambda.zip *
 
 WORKDIR /opt/app
