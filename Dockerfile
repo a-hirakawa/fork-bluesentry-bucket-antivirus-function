@@ -12,8 +12,8 @@ COPY ./*.py /opt/app/
 # Install packages
 RUN yum update -y
 RUN yum install -y cpio yum-utils zip unzip less gcc make patch zlib-devel bzip2 bzip2-devel readline-devel sqlite sqlite-devel openssl11-devel tk-devel libffi-devel xz-devel git tar
-RUN curl -s -S -L https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer | bash
 RUN yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+RUN curl -s -S -L https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer | bash
 
 RUN PATH=$PATH:/root/.pyenv/bin && \
     eval "$(pyenv init -)" && \
