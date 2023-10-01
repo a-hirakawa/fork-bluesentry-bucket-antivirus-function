@@ -60,6 +60,8 @@ RUN PATH=$PATH:/root/.pyenv/bin && \
 WORKDIR /root/.pyenv/versions/3.11.5/lib/python3.11/site-packages
 RUN zip -r9 /opt/app/build/lambda.zip *
 
-RUN mkdir -p /tmp/a/bin && cd /tmp/a && cp --dereference /usr/lib64/libpcre.so* bin && zip -r /opt/app/build/lambda.zip .
+RUN yum install -y libtool-ltdl
+
+RUN mkdir -p /tmp/a/bin && cd /tmp/a && cp --dereference /usr/lib64/{libpcre.so*,libltdl.so.*} bin && zip -r /opt/app/build/lambda.zip .
 
 WORKDIR /opt/app
