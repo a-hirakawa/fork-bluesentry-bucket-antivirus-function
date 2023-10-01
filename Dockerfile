@@ -8,12 +8,21 @@ RUN mkdir -p /opt/app/bin/
 # Copy in the lambda source
 WORKDIR /opt/app
 COPY ./*.py /opt/app/
-COPY requirements.txt /opt/app/requirements.txt
 
 # Install packages
 RUN yum update -y
-RUN yum install -y cpio yum-utils zip unzip less
+RUN yum install -y cpio yum-utils zip unzip less gcc make patch zlib-devel bzip2 bzip2-devel readline-devel sqlite sqlite-devel openssl11-devel tk-devel libffi-devel xz-devel git tar
+RUN curl -s -S -L https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer | bash
 RUN yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+
+RUN PATH=$PATH:/root/.pyenv/bin && \
+    eval "$(pyenv init -)" && \
+    pyenv install 3.11.5
+COPY requirements.txt /opt/app/requirements.txt
+RUN PATH=$PATH:/root/.pyenv/bin && \
+    eval "$(pyenv init -)" && \
+    pyenv global 3.11 && \
+    pip3 install -r /opt/app/requirements.txt
 
 # Download libraries we need to run in lambda
 WORKDIR /tmp
@@ -40,17 +49,8 @@ RUN echo "CompressLocalDatabase yes" >> /opt/app/bin/freshclam.conf
 WORKDIR /opt/app
 RUN zip -r9 --exclude="*test*" /opt/app/build/lambda.zip *.py bin
 
-RUN yum install -y gcc make patch zlib-devel bzip2 bzip2-devel readline-devel sqlite sqlite-devel openssl11-devel tk-devel libffi-devel xz-devel git tar
-RUN curl -s -S -L https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer | bash
-RUN echo 'PATH=$PATH:/root/.pyenv/bin' >> ~/.bashrc
-RUN echo 'eval "$(pyenv init -)"' >> ~/.bashrc
-RUN PATH=$PATH:/root/.pyenv/bin && \
-    eval "$(pyenv init -)" && \
-    pyenv install 3.11.5
-RUN PATH=$PATH:/root/.pyenv/bin && \
-    eval "$(pyenv init -)" && \
-    pyenv global 3.11 && \
-    pip3 install -r /opt/app/requirements.txt
+# RUN echo 'PATH=$PATH:/root/.pyenv/bin' >> ~/.bashrc
+# RUN echo 'eval "$(pyenv init -)"' >> ~/.bashrc
 
 WORKDIR /root/.pyenv/versions/3.11.5/lib/python3.11/site-packages
 RUN zip -r9 /opt/app/build/lambda.zip *
