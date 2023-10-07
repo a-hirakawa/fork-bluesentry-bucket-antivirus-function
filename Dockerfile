@@ -52,6 +52,6 @@ WORKDIR /opt/app
 RUN zip -r9 --exclude="*test*" /opt/app/build/lambda.zip *.py bin
 
 WORKDIR /root/.pyenv/versions/3.11.5/lib/python3.11/site-packages
-RUN zip -r9 --exclude="pip/*" --exclude="pip-*.dist-info/*" --exclude="setuptools/*" --exclude="setuptools-*.dist-info/*" --exclude="pkg_resources/*" --exclude="pkg_resources-*.dist-info/*" /opt/app/build/lambda.zip *
+RUN zip -r9 --exclude="pip/*" --exclude="pip-*.dist-info/*" --exclude="setuptools/*" --exclude="setuptools-*.dist-info/*" --exclude="pkg_resources/*" --exclude="pkg_resources-*.dist-info/*" --exclude="*/__pycache__/*" --exclude="__pycache__/*" /opt/app/build/lambda.zip *
 
 WORKDIR /opt/app
